@@ -8,53 +8,12 @@ import Navbar from '../src/components/layout/Navbar';
 import Users from '../src/components/users/Users';
 import Search from '../src/components/users/Search';
 import Alert from './components/layout/Alert';
-import axios from 'axios';
 import About from './components/pages/About';
 import User from './components/users/User';
 
 const App = () => {
-	const [users, setUsers] = useState([]);
-	const [user, setUser] = useState({});
-	const [repos, setRepos] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [alert, setAlert] = useState(null);
-
-	// useEffect(() => {
-	// 	const myFetchApi = async () => {
-	// 		setLoading(true);
-	// 		const res = await axios.get(
-	// 			`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-	// 		);
-	// 		setUsers(res.data);
-	// 		setLoading(false);
-	// 	};
-	// 	myFetchApi();
-	// 	// eslint-disable-next-line
-	// }, []);
-
-	// Get Single User
-	const getUser = async username => {
-		const res = await axios.get(
-			`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-		);
-		setUser(res.data);
-		setLoading(false);
-	};
-
-	// Get Single User Repos
-	const getUserRepos = async username => {
-		const res = await axios.get(
-			`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-		);
-		setRepos(res.data);
-		setLoading(false);
-	};
-
-	// clear User state
-	const clearUsers = () => {
-		setUser([]);
-		setLoading(false);
-	};
 
 	// setAlert
 	const showAlert = (msg, type) => {
@@ -76,30 +35,13 @@ const App = () => {
 								path='/'
 								render={props => (
 									<Fragment>
-										<Search
-											clearUsers={clearUsers}
-											showClear={users.length > 0 ? true : false}
-											setAlert={showAlert}
-										/>
+										<Search setAlert={showAlert} />
 										<Users />
 									</Fragment>
 								)}
 							/>
 							<Route exact path='/about' component={About} />
-							<Route
-								exact
-								path='/user/:login'
-								render={props => (
-									<User
-										{...props}
-										getUser={getUser}
-										getUserRepos={getUserRepos}
-										repos={repos}
-										user={user}
-										loading={loading}
-									/>
-								)}
-							/>
+							<Route exact path='/user/:login' component={User} />
 						</Switch>
 					</div>
 				</div>
