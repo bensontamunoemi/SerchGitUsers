@@ -14,7 +14,7 @@ const Users = ({ loading, users }) => {
 		return <Spinner />;
 	} else {
 		return (
-			<div style={userStyle}>
+			<div style={userStyle} className='mobile'>
 				{users.map(user => (
 					<UserItem key={user.id} user={user} />
 				))}
